@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat with Git Assistant</title>
+  </head>
+  <body>
+    <h1>Git Assistant Chat</h1>
+    <input type="text" id="query" placeholder="Ask something..." />
+    <button onclick="sendQuery()">Send</button>
+    <div id="responseContainer"></div>
+
+    <script>
+      const vscode = acquireVsCodeApi();
+
+      function sendQuery() {
+        const query = document.getElementById("query").value;
+        vscode.postMessage({ command: "askQuestion", text: query });
+      }
+
+      window.addEventListener("message", (event) => {
+        const message = event.data;
+
+        if (message.command === "showResponse") {
+          const responseContainer =
+            document.getElementById("responseContainer");
+          responseContainer.innerHTML = "";
+
+          const responseText = document.createElement("p");
+          responseText.textContent = message.response;
+          responseContainer.appendChild(responseText);
+
+          const insertButton = document.createElement("button");
+          insertButton.textContent = "Insert Command";
+          insertButton.onclick = () =>
+            vscode.postMessage({
+              command: "insertCommand",
+              command: message.response,
+            });
+          responseContainer.appendChild(insertButton);
+        }
+      });
+    </script>
+  </body>
+</html>

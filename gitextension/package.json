@@ -6,16 +6,33 @@
   "engines": {
     "vscode": "^1.92.0"
   },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./extension.js",
+  "categories": ["Other"],
+  "activationEvents": ["onCommand:gitAssistant.startChat"],
+  "main": "./src/extension.js",
   "contributes": {
-    "commands": [{
-      "command": "gitextension.helloWorld",
-      "title": "Hello World"
-    }]
+    "commands": [
+      {
+        "command": "gitAssistant.startChat",
+        "title": "Start Chat with Git Assistant"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gitAssistantSidebar",
+          "title": "Git Assistant",
+          "icon": "media/git-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "gitAssistantSidebar": [
+        {
+          "id": "gitAssistantChat",
+          "name": "Chat"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
